@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; font-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>Warehouse scanner app UX – logistics case study · Lucie Ulrich</title>
+<meta name="description" content="Logistics UX case study: a scanner app for depot workers on Zebra devices. Clear states, no language needed, built for the first shift.">
+<meta name="author" content="Lucie Ulrich">
+<meta property="og:title" content="Warehouse scanner app UX – logistics case study · Lucie Ulrich">
+<meta property="og:description" content="Logistics UX case study: a scanner app for depot workers on Zebra devices. Clear states, no language needed, built for the first shift.">
+<meta property="og:type" content="website">
+<link rel="stylesheet" href="fonts/fonts.css">
+<style>
+body{margin:0;background:var(--bg)}
+:root{--font-display:"Archivo", "Arial Narrow", system-ui, sans-serif;--font-sans:"Familjen Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;--ink:#0E0E0E;--paper:#F3F0EA;--card:#E9E5DD;--red:#E10600;--mute:#66625B;--line:rgba(14,14,14,.12)}
+*{box-sizing:border-box}
+a{color:inherit;text-decoration:none}
+.page{font-family:var(--font-sans);color:var(--fg);background:var(--bg);min-height:100vh;-webkit-font-smoothing:antialiased}
+.dark{--bg:#0E0E0E;--fg:#F3F0EA;--mute:#8C887F;--line:rgba(243,240,234,.14);--card:#1A1A1A}
+.light{--bg:#F3F0EA;--fg:#0E0E0E}
+.pk{--bg:#DEDDD9;--fg:#0E0E0E;--mute:#55534E;--line:rgba(14,14,14,.14);--card:#CFCDC8}
+.jt{--bg:#06302A;--fg:#F3F0EA;--mute:#9DB8B1;--line:rgba(243,240,234,.16);--card:#0D3F37}
+.wrap{max-width:1360px;margin:0 auto;padding:0 32px}
+.top{display:flex;justify-content:space-between;align-items:center;padding:28px 0;font-size:15px}
+.top .nm{font-weight:600;letter-spacing:-.01em}
+.top nav{display:flex;gap:28px;color:var(--mute)}
+.top nav a:hover,.ln:hover{color:var(--fg)}
+.disp{font-family:var(--font-display);font-stretch:118%;font-weight:800;text-transform:uppercase;letter-spacing:-.025em;line-height:.92;margin:0}
+.lbl{font-size:18px;font-weight:500;color:var(--mute);letter-spacing:0}
+.lead{font-size:20px;line-height:1.45;margin:0;max-width:620px}
+.lead .m{color:var(--fg);font-weight:700}
+.chip{display:inline-flex;align-items:center;padding:7px 11px;border-radius:999px;font-size:13px;font-weight:500;background:rgba(14,14,14,.62);color:#F3F0EA;backdrop-filter:blur(8px)}
+.chip.lt{background:rgba(243,240,234,.86);color:#0E0E0E}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.tile{position:relative;display:flex;flex-direction:column;gap:14px}
+.tile .media{position:relative;border-radius:18px;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.tile .media img{display:block;transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+a.tile:hover .media img{transform:scale(1.03)}
+.tile .media .chips{position:absolute;left:14px;bottom:14px;right:14px}
+.tile .cap{display:flex;justify-content:space-between;align-items:baseline;gap:16px}
+.tile .tt{font-family:var(--font-display);font-stretch:118%;font-weight:800;text-transform:uppercase;font-size:20px;letter-spacing:-.01em}
+.tile .ar{transition:transform .25s}
+a.tile:hover .ar{transform:translateX(4px)}
+.tile .ds{font-size:16px;color:var(--mute);margin-top:4px}
+.sec{padding:120px 0 0}
+.sh{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;align-items:start}
+.sh .no{font-size:18px;font-weight:500;color:var(--mute)}
+.h2{font-family:var(--font-display);font-stretch:118%;font-weight:800;text-transform:uppercase;font-size:clamp(26px,2.6vw,38px);letter-spacing:-.01em;line-height:1.02;margin:0;max-width:900px}
+.p{font-size:18px;line-height:1.55;margin:14px 0 0;max-width:640px;color:var(--mute)}
+.p b{color:var(--fg);font-weight:600}
+.shot{display:block;width:100%;height:auto;border-radius:16px}
+.panel{border-radius:20px;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:40px}
+.facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;padding:28px 0;border-top:0;border-bottom:0;margin-top:56px}
+.facts div{display:flex;flex-direction:column;gap:6px;font-size:15px;line-height:1.4}
+.stat{font-family:var(--font-display);font-stretch:112%;font-weight:800;font-size:clamp(56px,7vw,112px);letter-spacing:-.03em;line-height:.9}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;align-items:center}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.rows{margin-top:28px;border-top:0}
+.rows div{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;padding:16px 0;border-bottom:0;font-size:17px}
+.rows div span:first-child{color:var(--mute)}
+.ph{border-radius:16px;background:var(--card);display:flex;align-items:center;justify-content:center;text-align:center;padding:16px;font-size:13px;color:var(--mute);border:1px dashed var(--line)}
+.next{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;padding:48px 0;margin-top:140px;border-top:0}
+.next .disp{font-size:clamp(40px,6vw,96px);transition:color .25s}
+.next:hover .disp{color:var(--red)}
+.foot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:28px 0 36px;font-size:14px;color:var(--mute)}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 22px;border-radius:999px;font-weight:500;font-size:15px;background:var(--fg);color:var(--bg)}
+.btn.o{background:transparent;color:var(--fg);box-shadow:inset 0 0 0 1px var(--line)}
+.in{animation:in .8s cubic-bezier(.2,.8,.2,1) both}
+@keyframes in{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@media (max-width:860px){.wrap{padding:0 16px}.sh{grid-template-columns:1fr;gap:8px}.facts{grid-template-columns:repeat(2,minmax(0,1fr))}.grid2,.grid3,.split{grid-template-columns:1fr}.grid4{grid-template-columns:repeat(2,minmax(0,1fr))}.rows div{grid-template-columns:1fr;gap:4px}.top nav a.mail{display:none}}
+@media (prefers-reduced-motion:reduce){.in{animation:none}}
+.back{display:inline-flex;align-items:center;gap:14px;font-weight:600;letter-spacing:-.01em}
+.back .bk{width:60px;height:60px;border-radius:999px;display:flex;align-items:center;justify-content:center;background:var(--fg);color:var(--bg);transition:transform .25s cubic-bezier(.2,.8,.2,1),background .25s}
+.top{justify-content:flex-end;min-height:116px}
+.back{position:fixed;z-index:60;top:28px;left:max(16px,calc((100vw - 1360px)/2 + 32px))}
+.back .bk{box-shadow:0 8px 24px rgba(0,0,0,.18)}
+@media (max-width:860px){.back{top:16px;left:16px}.back .bk{width:52px;height:52px}.top{min-height:84px}}
+.back:hover .bk{transform:translateX(-4px);background:var(--red);color:#fff}
+.schema{margin-top:40px;width:min(1720px,calc(100vw - 32px));position:relative;left:50%;transform:translateX(-50%);background:transparent;border-radius:20px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.schema-in{padding:8px 0}
+.schema img{display:block;width:100%;height:auto}
+.schema-hint{display:none;margin-top:10px}
+@media (max-width:860px){.schema{width:100%;left:auto;transform:none}.schema-in{width:1100px}.schema-hint{display:block}}
+.back .bt{font-family:var(--font-display);font-stretch:118%;font-weight:800;text-transform:uppercase;font-size:20px;letter-spacing:-.01em}
+.agl{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding:16px 20px;border-radius:999px;background:#fff;font-size:17px;transition:background .2s}
+.agl:hover{background:#FFF6F4}
+.agl b{font-weight:600}
+.agl-go{margin-left:auto;font-weight:600;color:#E10600}
+.anns{display:flex;flex-direction:column;border-top:0}
+.ann{display:grid;grid-template-columns:40px minmax(0,1fr);gap:12px;padding:16px 0;border-bottom:0;font-size:21px;line-height:1.5;color:var(--mute)}
+.ann b{color:var(--fg);font-weight:600}
+.ann-n{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:999px;background:#E10600;color:#fff;font-size:12px;font-weight:600}
+.top nav a.cta{display:inline-flex;align-items:center;gap:8px;margin:0;padding:11px 18px;border-radius:999px;background:var(--red);color:#fff;font-weight:600;transition:transform .2s,background .2s}
+.top nav a.cta:hover{background:#B30500;color:#fff;transform:translateY(-1px)}
+.top nav{align-items:center}
+.lk{display:inline-flex;align-items:center;gap:14px;margin-top:28px;padding:10px 10px 10px 24px;border-radius:999px;background:var(--fg);color:var(--bg);font-weight:600;font-size:17px;transition:background .25s,transform .25s}
+.lk-go{width:40px;height:40px;border-radius:999px;display:flex;align-items:center;justify-content:center;background:var(--red);color:#fff;font-size:18px;transition:transform .25s}
+.lk:hover{transform:translateY(-2px)}
+.lk:hover .lk-go{transform:rotate(-45deg)}
+.avm-wrap{margin-top:48px}
+.avm-grid{margin-top:28px}
+.avm{margin:0;display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+.avm-tag{display:block;font-size:16px;font-weight:600;padding:0}
+.avm-ph{width:100%;aspect-ratio:9/16;max-height:520px;background:#fff;border:2px dashed rgba(14,14,14,.25)}
+.avm-arr{font-family:var(--font-display);font-weight:800;font-size:32px;text-align:center}
+.avm-pts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+@media (max-width:860px){.avm-pts{grid-template-columns:1fr 1fr}}
+.avm-pt{display:flex;flex-direction:column;gap:2px;padding:14px 16px;border-radius:16px;background:#fff}
+.avm-pt b{font-family:var(--font-display);font-stretch:118%;font-weight:800;text-transform:uppercase;font-size:16px}
+.avm-pt span{font-size:16px;color:var(--mute)}
+@media (max-width:980px){.avm-grid{grid-template-columns:1fr}.avm-arr{transform:rotate(90deg)}}
+.stp{display:grid;grid-template-columns:30px minmax(0,1fr);gap:14px;padding-top:18px;border-top:0;font-size:17px;line-height:1.45;color:var(--mute)}
+.stp b{display:block;color:var(--fg);font-weight:600}
+.stp-n{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:999px;background:#E10600;color:#fff;font-size:12px;font-weight:600}
+.h2{font-size:clamp(32px,3.8vw,58px)!important;line-height:.98!important}
+.one{font-size:21px;line-height:1.4;margin:18px 0 0;max-width:720px;color:var(--fg);font-weight:500}
+.more{margin-top:28px;max-width:680px}
+.more summary{cursor:pointer;list-style:none;display:inline-flex;align-items:center;gap:10px;font-weight:600;font-size:16px;padding:10px 18px;border-radius:999px;box-shadow:inset 0 0 0 1px var(--line);transition:background .2s}
+.more summary:hover{background:var(--line)}
+.more summary::-webkit-details-marker{display:none}
+.more .pl{display:inline-block;transition:transform .25s;font-size:20px;line-height:1}
+.more[open] .pl{transform:rotate(45deg)}
+.more .p{margin-top:16px}
+.more .facts{margin-top:20px}
+.hero-stats{margin-top:64px}
+.pts{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}.pts span{display:inline-flex;padding:8px 14px;border-radius:999px;font-weight:600;font-size:15px;background:#fff;box-shadow:inset 0 0 0 1px var(--line)}
+.band{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px 40px;padding:28px 32px;border-radius:22px;background:#fff}
+.band:hover .lk-go{transform:rotate(-45deg)}
+.band .stat{font-size:clamp(40px,4.4vw,64px)}
+
+.disp,.h2,.ct,.who-big,.one{text-wrap:balance}
+.stat{white-space:nowrap}
+
+.mn-t{position:fixed!important;width:1px;height:1px;opacity:0;pointer-events:none}
+.mn-b{position:fixed;z-index:90;top:28px;right:max(16px,calc((100vw - 1360px)/2 + 32px));display:inline-flex;align-items:center;gap:14px;cursor:pointer;font-family:var(--font-sans);font-weight:600;font-size:17px;color:var(--fg);-webkit-tap-highlight-color:transparent}
+.mn-b .mn-c{width:60px;height:60px;border-radius:999px;display:flex;align-items:center;justify-content:center;background:var(--fg);color:var(--bg);box-shadow:0 8px 24px rgba(0,0,0,.18);transition:transform .25s cubic-bezier(.2,.8,.2,1),background .25s}
+.mn-b:hover .mn-c{background:var(--red);color:#fff}
+.mn-b .mn-x{display:none}
+.mn-o{position:fixed;inset:0;z-index:80;background:#0E0E0E;color:#F3F0EA;overflow-y:auto;opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s}
+.mn-in{max-width:1360px;margin:0 auto;padding:128px 32px 40px;min-height:100%;display:flex;flex-direction:column;gap:48px}
+.mn-l{display:flex;flex-direction:column;gap:22px;margin:0;padding:0;list-style:none}
+.mn-l a{font-family:var(--font-display);font-stretch:118%;font-weight:800;text-transform:uppercase;letter-spacing:-.02em;line-height:1;font-size:clamp(24px,3vw,42px);color:#F3F0EA;transition:color .2s}
+.mn-l a:hover,.mn-l a[aria-current]{color:#E10600}
+.mn-f{margin-top:auto;display:flex;flex-wrap:wrap;gap:12px 28px;font-size:16px;color:#8C887F}
+.mn-f a:hover{color:#F3F0EA}
+.mn-t:checked ~ .mn-o{opacity:1;visibility:visible}
+.mn-t:checked ~ .mn-b{color:#F3F0EA}
+.mn-t:checked ~ .mn-b .mn-c{background:#F3F0EA;color:#0E0E0E}
+.mn-t:checked ~ .mn-b .mn-h{display:none}
+.mn-t:checked ~ .mn-b .mn-x{display:block}
+.mn-t:focus-visible ~ .mn-b .mn-c{outline:3px solid #E10600;outline-offset:3px}
+body:has(.mn-t:checked){overflow:hidden}
+@media (max-width:860px){.mn-b{top:16px;right:16px;font-size:16px;gap:10px}.mn-b .mn-c{width:52px;height:52px}.mn-in{padding:110px 16px 32px}}
+</style>
+</head>
+<body>
+<div class="page pk">
+<div class="wrap"><header class="top"><input type="checkbox" id="mn-t" class="mn-t" aria-label="Open menu"><label for="mn-t" class="mn-b" aria-label="Menu"><span class="mn-c"><svg class="mn-h" viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"></path></svg><svg class="mn-x" viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></span></label><nav class="mn-o" aria-label="Site menu"><div class="mn-in"><ul class="mn-l"><li><a href="index.html">Home</a></li><li><a href="design-agent.html">Design agent</a></li><li><a href="packeta.html" aria-current="page">Packeta</a></li><li><a href="banking.html">J&amp;T Banka</a></li><li><a href="intelino.html">Intelino</a></li><li><a href="process.html">How I work</a></li><li><a href="about.html">About me &amp; CV</a></li><li><a href="contact.html">Contact</a></li></ul><div class="mn-f"><a href="mailto:ulrichluciee@gmail.com">ulrichluciee@gmail.com</a><a href="https://www.linkedin.com/in/lucieeulrich/" target="_blank" rel="noopener">LinkedIn ↗</a></div></div></nav><a class="back" href="index.html" aria-label="Back to home"><span class="bk"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H5M11 5l-7 7 7 7"></path></svg></span></a></header></div>
+<div class="wrap">
+<section style="padding:72px 0 0"><h1 class="disp in" style="font-size:clamp(56px,9vw,148px);animation-delay:.08s">SCANNER APP FOR DEPOT WORKERS</h1><span class="lbl in" style="display:block;margin-top:24px;animation-delay:.12s">Ackee for a logistics client · 2026</span><p class="one in" style="font-size:24px;margin-top:28px;animation-delay:.16s">A demanding app with a fast click-through flow, used by people with no experience, often on their first shift. <span style="color:var(--mute)">I took the original wireframes and decided what the screens really need.</span></p></section>
+
+
+<section class="sec" style="padding-top:96px"><div class="sh"><span class="no">01 · Original wireframe vs. my edits</span><div><h2 class="h2">It has to work fast first.</h2><p class="one">I saw potential to make the operator workflow more user-friendly. It's an app where speed is everything. Users don't need to know the language, and it may be their first shift.</p></div></div><div class="split" style="margin-top:40px;align-items:start"><div class="panel" style="background:#fff;flex-direction:column;align-items:stretch;gap:20px;padding:32px"><figure class="avm"><span class="avm-tag" style="color:#0E0E0E">Original wireframe</span><img src="assets/846976dde2a07a5c7fd01940a5c67a26.png" alt="Original wireframe of the scanner screens: scan, sorted, wrong destination" style="width:100%;height:auto;display:block"></figure><figure class="avm"><span class="avm-tag" style="color:#E10600">My edit</span><img src="assets/5aa4f351079f18d7d8163dbe14fff158.png" alt="My edit of the scanner screens: big destination code, colour and icon feedback" style="width:100%;height:auto;display:block"></figure></div><div class="anns"><div class="ann"><span class="ann-n">01</span><div><b>Clear warning states.</b> Every state has its own colour and icon. Green means sorted, red means stop.</div></div><div class="ann"><span class="ann-n">02</span><div><b>No language needed, even on the first shift.</b> Icons and one big code do the talking.</div></div><div class="ann"><span class="ann-n">03</span><div><b>Clear hierarchy.</b> The destination code is the biggest thing on screen.</div></div><div class="ann"><span class="ann-n">04</span><div><b>Sized for the real device.</b> The depot's Zebra scanner, 1:1.</div></div><div class="ann"><span class="ann-n">05</span><div><b>Leave any time.</b> Even in the middle of a shift, for a break.</div></div><div class="ann"><span class="ann-n">06</span><div><b>Sound confirms every scan.</b> Eyes stay on the parcel, so the work stays fast.</div></div><div class="ann"><span class="ann-n">07</span><div><b>Scanning made visible.</b> The main action happens outside the screen, so I drew it into the Figma flow for the other designers.</div></div></div></div></section><section class="sec" style="padding-top:72px"><a class="band" href="design-agent.html"><div style="display:flex;align-items:center;gap:16px"><svg width="56" height="56" viewBox="0 0 28 28" aria-hidden="true" style="display:block;flex:none"><circle cx="14" cy="14" r="13" fill="#E10600"></circle><circle cx="10" cy="12" r="3.4" fill="#F3F0EA"></circle><circle cx="18" cy="12" r="3.4" fill="#F3F0EA"></circle><circle cx="11" cy="12.5" r="1.6" fill="#0E0E0E"></circle><circle cx="19" cy="12.5" r="1.6" fill="#0E0E0E"></circle><path d="M9.5 18 Q14 21.5 18.5 18" stroke="#0E0E0E" stroke-width="1.6" fill="none" stroke-linecap="round"></path></svg><span class="lbl">I also built a design agent for the team after that, with personas that test every flow.</span></div><span class="lk" style="margin:0"><span>How the design agent works</span><span class="lk-go" aria-hidden="true">→</span></span></a></section><section class="sec"><div class="sh"><span class="no">02 · Small idea</span><div><h2 class="h2">A 2-MINUTE VIDEO SOLVES DAYS OF EXPLANATION OF THE PROCESS</h2><p class="one">The biggest problem was understanding the process. A few minutes of video saved designers and non-technical people hours of trying to understand it.</p></div></div><div style="margin-top:40px;border-radius:20px;overflow:hidden;background:#fff"><svg viewBox="0 0 1600 740" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A frame from the animated sorter explainer: a worker stands in front of the line and scans a parcel at the chute; the parcel goes to cage A-12. On the right the operator app: Scan a packet" style="display:block;width:100%;height:auto">
+<rect x="40" y="40" width="1020" height="600" rx="18" fill="#F3F0EA"></rect>
+<rect x="60" y="60" width="120" height="30" rx="15" fill="#E10600"></rect><text x="120" y="81" text-anchor="middle" font-size="15" fill="#fff" style="font-family:var(--font-sans);font-weight:500">● REC · 0:42</text>
+<text x="200" y="81" font-size="16" fill="#66625B" style="font-family:var(--font-sans);font-weight:500">Sorter explainer · schematic frame</text>
+<path d="M150 118 L330 118 L312 222 L168 222 Z" fill="#FFFFFF" stroke="#0E0E0E" stroke-width="4"></path>
+<rect x="164" y="128" width="152" height="30" rx="6" fill="#0E0E0E"></rect><text x="240" y="149" text-anchor="middle" font-size="16" fill="#F3F0EA" style="font-family:var(--font-display);font-stretch:118%;font-weight:800;text-transform:uppercase">Route 12 · A</text>
+<rect x="206" y="154" width="66" height="66" rx="9" fill="#F2B705"></rect><circle cx="227.12" cy="177.76" r="8.58" fill="#F3F0EA"></circle><circle cx="229.26500000000001" cy="178.618" r="3.96" fill="#0E0E0E"></circle><circle cx="250.88" cy="177.76" r="8.58" fill="#F3F0EA"></circle><circle cx="253.025" cy="178.618" r="3.96" fill="#0E0E0E"></circle><text x="239.0" y="209.44" text-anchor="middle" font-size="15.84" fill="#0E0E0E" style="font-family:var(--font-display);font-stretch:118%;font-weight:800;text-transform:uppercase">A-12</text>
+<rect x="60" y="226" width="980" height="24" rx="12" fill="#0E0E0E"></rect>
+<g fill="#F3F0EA"><circle cx="86" cy="238" r="5.5"></circle><circle cx="140" cy="238" r="5.5"></circle><circle cx="194" cy="238" r="5.5"></circle><circle cx="248" cy="238" r="5.5"></circle><circle cx="302" cy="238" r="5.5"></circle><circle cx="356" cy="238" r="5.5"></circle><circle cx="410" cy="238" r="5.5"></circle><circle cx="464" cy="238" r="5.5"></circle><circle cx="518" cy="238" r="5.5"></circle><circle cx="572" cy="238" r="5.5"></circle><circle cx="626" cy="238" r="5.5"></circle><circle cx="680" cy="238" r="5.5"></circle><circle cx="734" cy="238" r="5.5"></circle><circle cx="788" cy="238" r="5.5"></circle><circle cx="842" cy="238" r="5.5"></circle><circle cx="896" cy="238" r="5.5"></circle><circle cx="950" cy="238" r="5.5"></circle><circle cx="1004" cy="238" r="5.5"></circle></g>
+<rect x="460" y="156" width="72" height="72" rx="9" fill="#F2B705"></rect><circle cx="483.04" cy="181.92" r="9.36" fill="#F3F0EA"></circle><circle cx="485.38" cy="182.856" r="4.32" fill="#0E0E0E"></circle><circle cx="508.96" cy="181.92" r="9.36" fill="#F3F0EA"></circle><circle cx="511.29999999999995" cy="182.856" r="4.32" fill="#0E0E0E"></circle><path d="M434 174.0 h16 M426 192.0 h24 M434 210.0 h16" stroke="#0E0E0E" stroke-width="3" stroke-linecap="round" opacity=".35"></path><rect x="700" y="156" width="72" height="72" rx="9" fill="#F2B705"></rect><circle cx="723.04" cy="181.92" r="9.36" fill="#F3F0EA"></circle><circle cx="725.38" cy="182.856" r="4.32" fill="#0E0E0E"></circle><circle cx="748.96" cy="181.92" r="9.36" fill="#F3F0EA"></circle><circle cx="751.3000000000001" cy="182.856" r="4.32" fill="#0E0E0E"></circle><path d="M674 174.0 h16 M666 192.0 h24 M674 210.0 h16" stroke="#0E0E0E" stroke-width="3" stroke-linecap="round" opacity=".35"></path><rect x="930" y="156" width="72" height="72" rx="9" fill="#F2B705"></rect><circle cx="953.04" cy="181.92" r="9.36" fill="#F3F0EA"></circle><circle cx="955.38" cy="182.856" r="4.32" fill="#0E0E0E"></circle><circle cx="978.96" cy="181.92" r="9.36" fill="#F3F0EA"></circle><circle cx="981.3000000000001" cy="182.856" r="4.32" fill="#0E0E0E"></circle><path d="M904 174.0 h16 M896 192.0 h24 M904 210.0 h16" stroke="#0E0E0E" stroke-width="3" stroke-linecap="round" opacity=".35"></path>
+<path d="M520 262 L274 186 L274 216 L572 268 Z" fill="#E10600" opacity=".22"></path>
+<path d="M520 262 L274 196 M546 264 L274 206" stroke="#E10600" stroke-width="3" stroke-dasharray="2 9" stroke-linecap="round"></path>
+<path d="M240 256 C 240 300, 445 296, 445 326" stroke="#2D5BFF" stroke-width="5" fill="none" stroke-linecap="round"></path><path d="M445 344 L434 324 L456 324 Z" fill="#2D5BFF"></path>
+<line x1="60" y1="600" x2="1040" y2="600" stroke="#0E0E0E" stroke-width="3" opacity=".25"></line>
+<rect x="120" y="390" width="170" height="176" rx="8" fill="#FFFFFF" stroke="#0E0E0E" stroke-width="4"></rect><line x1="162.5" y1="390" x2="162.5" y2="566" stroke="#0E0E0E" stroke-width="2" opacity=".45"></line><line x1="205.0" y1="390" x2="205.0" y2="566" stroke="#0E0E0E" stroke-width="2" opacity=".45"></line><line x1="247.5" y1="390" x2="247.5" y2="566" stroke="#0E0E0E" stroke-width="2" opacity=".45"></line><line x1="120" y1="434.0" x2="290" y2="434.0" stroke="#0E0E0E" stroke-width="2" opacity=".45"></line><line x1="120" y1="478.0" x2="290" y2="478.0" stroke="#0E0E0E" stroke-width="2" opacity=".45"></line><line x1="120" y1="522.0" x2="290" y2="522.0" stroke="#0E0E0E" stroke-width="2" opacity=".45"></line><rect x="120" y="354" width="170" height="32" rx="6" fill="#0E0E0E"></rect><text x="205.0" y="377" text-anchor="middle" font-size="18" fill="#F3F0EA" style="font-family:var(--font-display);font-stretch:118%;font-weight:800;text-transform:uppercase">B-4</text><rect x="171.0" y="536" width="68" height="26" rx="13" fill="#FFFFFF" stroke="#0E0E0E" stroke-width="3"></rect><text x="205.0" y="555" text-anchor="middle" font-size="16" fill="#0E0E0E" style="font-family:var(--font-display);font-stretch:118%;font-weight:800;text-transform:uppercase">118</text><circle cx="140" cy="578" r="9" fill="#0E0E0E"></circle><circle cx="270" cy="578" r="9" fill="#0E0E0E"></circle>
+<rect x="360" y="390" width="170" height="176" rx="8" fill="#DDE6FF" stroke="#0E0E0E" stroke-width="4"></rect><line x1="402.5" y1="390" x2="402.5" y2="566" stroke="#0E0E0E" stroke-width="2" opacity=".45"></line><line x1="445.0" y1="390" x2="445.0" y2="566" stroke="#0E0E0E" stroke-width="2" opacity=".45"></line><line x1="487.5" y1="390" x2="487.5" y2="566" stroke="#0E0E0E" stroke-width="2" opacity=".45"></line><line x1="360" y1="434.0" x2="530" y2="434.0" stroke="#0E0E0E" stroke-width="2" opacity=".45"></line><line x1="360" y1="478.0" x2="530" y2="478.0" stroke="#0E0E0E" stroke-width="2" opacity=".45"></line><line x1="360" y1="522.0" x2="530" y2="522.0" stroke="#0E0E0E" stroke-width="2" opacity=".45"></line><rect x="360" y="354" width="170" height="32" rx="6" fill="#0E0E0E"></rect><text x="445.0" y="377" text-anchor="middle" font-size="18" fill="#F3F0EA" style="font-family:var(--font-display);font-stretch:118%;font-weight:800;text-transform:uppercase">A-12</text><rect x="378" y="510" width="48" height="48" rx="6" fill="#F2B705"></rect><rect x="432" y="510" width="48" height="48" rx="6" fill="#F2B705"></rect><rect x="411.0" y="536" width="68" height="26" rx="13" fill="#FFFFFF" stroke="#0E0E0E" stroke-width="3"></rect><text x="445.0" y="555" text-anchor="middle" font-size="16" fill="#0E0E0E" style="font-family:var(--font-display);font-stretch:118%;font-weight:800;text-transform:uppercase">245</text><circle cx="380" cy="578" r="9" fill="#0E0E0E"></circle><circle cx="510" cy="578" r="9" fill="#0E0E0E"></circle>
+<rect x="830" y="390" width="170" height="176" rx="8" fill="#FFFFFF" stroke="#0E0E0E" stroke-width="4"></rect><line x1="872.5" y1="390" x2="872.5" y2="566" stroke="#0E0E0E" stroke-width="2" opacity=".45"></line><line x1="915.0" y1="390" x2="915.0" y2="566" stroke="#0E0E0E" stroke-width="2" opacity=".45"></line><line x1="957.5" y1="390" x2="957.5" y2="566" stroke="#0E0E0E" stroke-width="2" opacity=".45"></line><line x1="830" y1="434.0" x2="1000" y2="434.0" stroke="#0E0E0E" stroke-width="2" opacity=".45"></line><line x1="830" y1="478.0" x2="1000" y2="478.0" stroke="#0E0E0E" stroke-width="2" opacity=".45"></line><line x1="830" y1="522.0" x2="1000" y2="522.0" stroke="#0E0E0E" stroke-width="2" opacity=".45"></line><rect x="830" y="354" width="170" height="32" rx="6" fill="#0E0E0E"></rect><text x="915.0" y="377" text-anchor="middle" font-size="18" fill="#F3F0EA" style="font-family:var(--font-display);font-stretch:118%;font-weight:800;text-transform:uppercase">C-07</text><rect x="881.0" y="536" width="68" height="26" rx="13" fill="#FFFFFF" stroke="#0E0E0E" stroke-width="3"></rect><text x="915.0" y="555" text-anchor="middle" font-size="16" fill="#0E0E0E" style="font-family:var(--font-display);font-stretch:118%;font-weight:800;text-transform:uppercase">061</text><circle cx="850" cy="578" r="9" fill="#0E0E0E"></circle><circle cx="980" cy="578" r="9" fill="#0E0E0E"></circle>
+<rect x="690" y="500" width="26" height="96" rx="10" fill="#0E0E0E"></rect><rect x="722" y="500" width="26" height="96" rx="10" fill="#0E0E0E"></rect>
+<rect x="670" y="402" width="96" height="120" rx="18" fill="#2D5BFF"></rect>
+<path d="M684 420 L594 352" stroke="#2D5BFF" stroke-width="22" stroke-linecap="round"></path>
+<circle cx="718" cy="366" r="36" fill="#E10600"></circle><circle cx="706.0" cy="360" r="9" fill="#F3F0EA"></circle><circle cx="708.25" cy="360.9" r="4" fill="#0E0E0E"></circle><circle cx="730.0" cy="360" r="9" fill="#F3F0EA"></circle><circle cx="732.25" cy="360.9" r="4" fill="#0E0E0E"></circle><path d="M706 378 Q718 388 730 378" stroke="#0E0E0E" stroke-width="3.5" stroke-linecap="round" fill="none"></path>
+<rect x="518" y="252" width="62" height="100" rx="14" fill="#0E0E0E"></rect><rect x="528" y="264" width="42" height="52" rx="6" fill="#F3F0EA"></rect><circle cx="549" cy="334" r="7" fill="#F3F0EA" opacity=".5"></circle><rect x="578" y="284" width="8" height="24" rx="3" fill="#F2B705"></rect>
+<circle cx="590" cy="350" r="15" fill="#2D5BFF"></circle>
+<rect x="40" y="640" width="1020" height="60" fill="#0E0E0E"></rect>
+<path d="M78 658 L96 670 L78 682 Z" fill="#F3F0EA"></path>
+<rect x="120" y="668" width="820" height="4" rx="2" fill="#F3F0EA" opacity=".3"></rect><rect x="120" y="668" width="290" height="4" rx="2" fill="#E10600"></rect><circle cx="410" cy="670" r="7" fill="#E10600"></circle>
+<text x="960" y="676" font-size="15" fill="#F3F0EA" style="font-family:var(--font-sans);font-weight:500">0:42 / 2:00</text>
+<rect x="1544" y="290" width="16" height="72" rx="6" fill="#F2B705"></rect>
+<rect x="1250" y="40" width="300" height="620" rx="32" fill="#0E0E0E"></rect>
+<rect x="1262" y="52" width="276" height="596" rx="22" fill="#F3F0EA"></rect>
+<rect x="1262" y="52" width="276" height="56" rx="22" fill="#0E0E0E"></rect><rect x="1262" y="80" width="276" height="28" fill="#0E0E0E"></rect>
+<text x="1400.0" y="88" text-anchor="middle" font-size="18" fill="#F3F0EA" style="font-family:var(--font-display);font-stretch:118%;font-weight:800;text-transform:uppercase">Chute L4</text>
+<g transform="translate(1360.0 272)" fill="none" stroke="#E10600" stroke-width="7" stroke-linecap="round"><path d="M0 22 V8 Q0 0 8 0 H22"></path><path d="M58 0 H72 Q80 0 80 8 V22"></path><path d="M80 58 V72 Q80 80 72 80 H58"></path><path d="M22 80 H8 Q0 80 0 72 V58"></path></g>
+<g fill="#0E0E0E"><rect x="1380.0" y="294" width="6" height="36" rx="2"></rect><rect x="1391.0" y="294" width="6" height="36" rx="2"></rect><rect x="1402.0" y="294" width="6" height="36" rx="2"></rect><rect x="1413.0" y="294" width="6" height="36" rx="2"></rect></g>
+<text x="1400.0" y="396" text-anchor="middle" font-size="26" fill="#0E0E0E" style="font-family:var(--font-display);font-stretch:118%;font-weight:800;text-transform:uppercase">Scan a packet</text>
+<text x="1400.0" y="430" text-anchor="middle" font-size="16" fill="#66625B" style="font-family:var(--font-sans);font-weight:500">The reader shows which</text>
+<text x="1400.0" y="452" text-anchor="middle" font-size="16" fill="#66625B" style="font-family:var(--font-sans);font-weight:500">container it goes into.</text></svg></div><details class="more"><summary><span class="pl">+</span>More detail</summary><p class="p">Designers spent days reading the specification and explaining the scanning process to each other. <b>Making the video took a short time.</b> It is schematic, in Czech and Polish, so the same video explained scanning to designers and later to operations and other non-technical people. Everyone talked about the same thing.</p></details></section><section class="sec" style="padding-top:96px"><span class="lbl">Project details</span><div class="facts" style="margin-top:16px"><div><span class="lbl">My role</span><span>UX/UI design, research</span></div><div><span class="lbl">Team</span><span>Me + 3 designers</span></div><div><span class="lbl">Platforms</span><span>Zebra scanner, web app</span></div><div><span class="lbl">Industry</span><span>Logistics &amp; parcel delivery</span></div></div></section><a class="next" href="banking.html"><div style="display:flex;flex-direction:column;gap:14px"><span class="lbl">Next case</span><span class="disp">Banking from zero</span></div><span class="disp" aria-hidden="true">→</span></a></div>
+<div class="wrap"><footer class="foot"><span>Lucie Ulrich · Product designer · Prague</span><span style="display:flex;flex-wrap:wrap;gap:12px 24px"><a class="ln" href="mailto:ulrichluciee@gmail.com">ulrichluciee@gmail.com</a><a class="ln" href="https://www.linkedin.com/in/lucieeulrich/">LinkedIn ↗</a><a class="ln" href="https://drive.google.com/file/d/1G9ZSz2dUczU3Vgd_duXCie2-PDqLNLEa/view">PDF ↗</a></span></footer></div>
+</div>
+</body>
+</html>
