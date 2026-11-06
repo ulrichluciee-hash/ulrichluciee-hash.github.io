@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; font-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>AI design agent for a design team – case study · Lucie Ulrich</title>
+<meta name="description" content="How I built an AI design agent in Claude with Figma MCP for a logistics design team: design system, team rules, synthetic personas. Design tasks from 5 days to 2.">
+<meta name="author" content="Lucie Ulrich">
+<meta property="og:title" content="AI design agent for a design team – case study · Lucie Ulrich">
+<meta property="og:description" content="How I built an AI design agent in Claude with Figma MCP for a logistics design team: design system, team rules, synthetic personas. Design tasks from 5 days to 2.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ulrichluciee-hash.github.io/lucie-ulrich-web/design-agent.html">
+<link rel="canonical" href="https://ulrichluciee-hash.github.io/lucie-ulrich-web/design-agent.html">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta property="og:image" content="https://ulrichluciee-hash.github.io/lucie-ulrich-web/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="627">
+<meta property="og:image:alt" content="Lucie Ulrich, product designer: Always finding new ways AI can save us work, so we can focus on the product.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ulrichluciee-hash.github.io/lucie-ulrich-web/og.png">
+<link rel="stylesheet" href="fonts/fonts.css">
+<style>
+body{margin:0;background:var(--bg)}
+:root{--font-display:"Archivo", "Arial Narrow", system-ui, sans-serif;--font-sans:"Familjen Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;--ink:#0E0E0E;--paper:#F3F0EA;--card:#E9E5DD;--red:#E10600;--mute:#66625B;--line:rgba(14,14,14,.12)}
+*{box-sizing:border-box}
+a{color:inherit;text-decoration:none}
+.page{font-family:var(--font-sans);color:var(--fg);background:var(--bg);min-height:100vh;-webkit-font-smoothing:antialiased}
+.dark{--bg:#0E0E0E;--fg:#F3F0EA;--mute:#8C887F;--line:rgba(243,240,234,.14);--card:#1A1A1A}
+.light{--bg:#F3F0EA;--fg:#0E0E0E}
+.pk{--bg:#DEDDD9;--fg:#0E0E0E;--mute:#55534E;--line:rgba(14,14,14,.14);--card:#CFCDC8}
+.jt{--bg:#06302A;--fg:#F3F0EA;--mute:#9DB8B1;--line:rgba(243,240,234,.16);--card:#0D3F37}
+.wrap{max-width:1360px;margin:0 auto;padding:0 32px}
+.top{display:flex;justify-content:space-between;align-items:center;padding:28px 0;font-size:15px}
+.top .nm{font-weight:600;letter-spacing:-.01em}
+.top nav{display:flex;gap:28px;color:var(--mute)}
+.top nav a:hover,.ln:hover{color:var(--fg)}
+.disp{font-family:var(--font-display);font-stretch:118%;font-weight:800;text-transform:uppercase;letter-spacing:-.025em;line-height:.92;margin:0}
+.lbl{font-size:18px;font-weight:500;color:var(--mute);letter-spacing:0}
+.lead{font-size:20px;line-height:1.45;margin:0;max-width:620px}
+.lead .m{color:var(--fg);font-weight:700}
+.chip{display:inline-flex;align-items:center;padding:7px 11px;border-radius:999px;font-size:13px;font-weight:500;background:rgba(14,14,14,.62);color:#F3F0EA;backdrop-filter:blur(8px)}
+.chip.lt{background:rgba(243,240,234,.86);color:#0E0E0E}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.tile{position:relative;display:flex;flex-direction:column;gap:14px}
+.tile .media{position:relative;border-radius:18px;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.tile .media img{display:block;transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+a.tile:hover .media img{transform:scale(1.03)}
+.tile .media .chips{position:absolute;left:14px;bottom:14px;right:14px}
+.tile .cap{display:flex;justify-content:space-between;align-items:baseline;gap:16px}
+.tile .tt{font-family:var(--font-display);font-stretch:118%;font-weight:800;text-transform:uppercase;font-size:20px;letter-spacing:-.01em}
+.tile .ar{transition:transform .25s}
+a.tile:hover .ar{transform:translateX(4px)}
+.tile .ds{font-size:16px;color:var(--mute);margin-top:4px}
+.sec{padding:120px 0 0}
+.sh{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;align-items:start}
+.sh .no{font-size:18px;font-weight:500;color:var(--mute)}
+.h2{font-family:var(--font-display);font-stretch:118%;font-weight:800;text-transform:uppercase;font-size:clamp(26px,2.6vw,38px);letter-spacing:-.01em;line-height:1.02;margin:0;max-width:900px}
+.p{font-size:18px;line-height:1.55;margin:14px 0 0;max-width:640px;color:var(--mute)}
+.p b{color:var(--fg);font-weight:600}
+.shot{display:block;width:100%;height:auto;border-radius:16px}
+.panel{border-radius:20px;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:40px}
+.facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;padding:28px 0;border-top:0;border-bottom:0;margin-top:56px}
+.facts div{display:flex;flex-direction:column;gap:6px;font-size:15px;line-height:1.4}
+.stat{font-family:var(--font-display);font-stretch:112%;font-weight:800;font-size:clamp(56px,7vw,112px);letter-spacing:-.03em;line-height:.9}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;align-items:center}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.rows{margin-top:28px;border-top:0}
+.rows div{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;padding:16px 0;border-bottom:0;font-size:17px}
+.rows div span:first-child{color:var(--mute)}
+.ph{border-radius:16px;background:var(--card);display:flex;align-items:center;justify-content:center;text-align:center;padding:16px;font-size:13px;color:var(--mute);border:1px dashed var(--line)}
+.next{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;padding:48px 0;margin-top:140px;border-top:0}
+.next .disp{font-size:clamp(40px,6vw,96px);transition:color .25s}
+.next:hover .disp{color:var(--red)}
+.foot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:28px 0 36px;font-size:14px;color:var(--mute)}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 22px;border-radius:999px;font-weight:500;font-size:15px;background:var(--fg);color:var(--bg)}
+.btn.o{background:transparent;color:var(--fg);box-shadow:inset 0 0 0 1px var(--line)}
+.in{animation:in .8s cubic-bezier(.2,.8,.2,1) both}
+@keyframes in{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@media (max-width:860px){.wrap{padding:0 16px}.sh{grid-template-columns:1fr;gap:8px}.facts{grid-template-columns:repeat(2,minmax(0,1fr))}.grid2,.grid3,.split{grid-template-columns:1fr}.grid4{grid-template-columns:repeat(2,minmax(0,1fr))}.rows div{grid-template-columns:1fr;gap:4px}.top nav a.mail{display:none}}
+@media (prefers-reduced-motion:reduce){.in{animation:none}}
+.back{display:inline-flex;align-items:center;gap:14px;font-weight:600;letter-spacing:-.01em}
+.back .bk{width:60px;height:60px;border-radius:999px;display:flex;align-items:center;justify-content:center;background:var(--fg);color:var(--bg);transition:transform .25s cubic-bezier(.2,.8,.2,1),background .25s}
+.top{justify-content:flex-end;min-height:116px}
+.back{position:fixed;z-index:60;top:28px;left:max(16px,calc((100vw - 1360px)/2 + 32px))}
+.back .bk{box-shadow:0 8px 24px rgba(0,0,0,.18)}
+@media (max-width:860px){.back{top:16px;left:16px}.back .bk{width:52px;height:52px}.top{min-height:84px}}
+.back:hover .bk{transform:translateX(-4px);background:var(--red);color:#fff}
+.schema{margin-top:40px;width:100%;position:relative;background:transparent;border-radius:20px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.schema-in{padding:8px 0}
+.schema img{display:block;width:100%;height:auto}
+.schema-hint{display:none;margin-top:10px}
+@media (max-width:860px){.schema{width:100%;left:auto;transform:none;overflow:visible}.schema-in{width:100%}.schema-hint{display:none}}
+.back .bt{font-family:var(--font-display);font-stretch:118%;font-weight:800;text-transform:uppercase;font-size:20px;letter-spacing:-.01em}
+.top nav a.cta{display:inline-flex;align-items:center;gap:8px;margin:0;padding:11px 18px;border-radius:999px;background:var(--red);color:#fff;font-weight:600;transition:transform .2s,background .2s}
+.top nav a.cta:hover{background:#B30500;color:#fff;transform:translateY(-1px)}
+.top nav{align-items:center}
+.h2{font-size:clamp(32px,3.8vw,58px)!important;line-height:.98!important}
+.one{font-size:21px;line-height:1.4;margin:18px 0 0;max-width:720px;color:var(--fg);font-weight:500}
+.more{margin-top:28px;max-width:680px}
+.more summary{cursor:pointer;list-style:none;display:inline-flex;align-items:center;gap:10px;font-weight:600;font-size:16px;padding:10px 18px;border-radius:999px;box-shadow:inset 0 0 0 1px var(--line);transition:background .2s}
+.more summary:hover{background:var(--line)}
+.more summary::-webkit-details-marker{display:none}
+.more .pl{display:inline-block;transition:transform .25s;font-size:20px;line-height:1}
+.more[open] .pl{transform:rotate(45deg)}
+.more .p{margin-top:16px}
+.more .facts{margin-top:20px}
+.hero-stats{margin-top:64px}
+.decs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin-top:40px}.dec{display:flex;flex-direction:column;gap:10px;padding:28px;border-radius:22px;background:#fff;box-shadow:inset 0 0 0 1px var(--line)}.dec b{font-family:var(--font-display);font-stretch:118%;font-weight:800;text-transform:uppercase;font-size:clamp(20px,1.8vw,26px);line-height:1.05;letter-spacing:-.01em}.dec span:last-child{font-size:17px;line-height:1.5;color:var(--mute)}.dec-n{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:999px;background:#E10600;color:#fff;font-size:12px;font-weight:600}@media (max-width:860px){.decs{grid-template-columns:minmax(0,1fr)}}
+.aa{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin-top:40px}.aa-f{margin:0;display:flex;flex-direction:column;align-items:flex-start;gap:14px;padding:28px;border-radius:22px;background:#fff}.aa-f img{display:block;width:100%;height:auto}.aa-t{display:block;font-size:16px;font-weight:600;padding:0}.aa-l{display:inline-flex;align-items:center;gap:10px;margin-top:24px;padding:12px 20px;border-radius:999px;background:var(--fg);color:var(--bg);font-weight:600;transition:background .2s}.aa-l:hover{background:#E10600;color:#fff}@media (max-width:860px){.aa{grid-template-columns:minmax(0,1fr)}}
+.dec:last-child:nth-child(odd){grid-column:1/-1}
+.decs{grid-template-columns:minmax(0,1fr);gap:0;margin-top:40px;border-top:0;max-width:1100px}
+.dec{display:grid;grid-template-columns:40px minmax(0,340px) minmax(0,1fr);gap:12px 28px;align-items:start;padding:26px 0;border-radius:0;background:transparent;box-shadow:none;border-bottom:0}
+.dec b{font-size:clamp(20px,1.7vw,24px)}
+.dec span:last-child{font-size:18px;line-height:1.5}
+@media (max-width:860px){.dec{grid-template-columns:40px minmax(0,1fr)}.dec span:last-child{grid-column:2}}
+
+.disp,.h2,.ct,.who-big,.one{text-wrap:balance}
+.stat{white-space:nowrap}
+.hero-stats>div{container-type:inline-size;min-width:0}
+.hero-stats .stat{font-size:min(clamp(56px,7vw,112px),17cqi)}
+.stp{display:grid;grid-template-columns:30px minmax(0,1fr);gap:14px;padding-top:18px;border-top:0;font-size:17px;line-height:1.45;color:var(--mute)}
+.stp b{display:block;color:var(--fg);font-weight:600}
+.stp-n{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:999px;background:#E10600;color:#fff;font-size:12px;font-weight:600}
+
+.mn-t{position:fixed!important;width:1px;height:1px;opacity:0;pointer-events:none}
+.mn-b{position:fixed;z-index:90;top:28px;right:max(16px,calc((100vw - 1360px)/2 + 32px));display:inline-flex;align-items:center;gap:14px;cursor:pointer;font-family:var(--font-sans);font-weight:600;font-size:17px;color:var(--fg);-webkit-tap-highlight-color:transparent}
+.mn-b .mn-c{width:60px;height:60px;border-radius:999px;display:flex;align-items:center;justify-content:center;background:var(--fg);color:var(--bg);box-shadow:0 8px 24px rgba(0,0,0,.18);transition:transform .25s cubic-bezier(.2,.8,.2,1),background .25s}
+.mn-b:hover .mn-c{background:var(--red);color:#fff}
+.mn-b .mn-x{display:none}
+.mn-o{position:fixed;inset:0;z-index:80;background:#0E0E0E;color:#F3F0EA;overflow-y:auto;opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s}
+.mn-in{max-width:1360px;margin:0 auto;padding:128px 32px 40px;min-height:100%;display:flex;flex-direction:column;gap:48px}
+.mn-l{display:flex;flex-direction:column;gap:22px;margin:0;padding:0;list-style:none}
+.mn-l a{font-family:var(--font-display);font-stretch:118%;font-weight:800;text-transform:uppercase;letter-spacing:-.02em;line-height:1;font-size:clamp(24px,3vw,42px);color:#F3F0EA;transition:color .2s}
+.mn-l a:hover,.mn-l a[aria-current]{color:#E10600}
+.mn-f{margin-top:auto;display:flex;flex-wrap:wrap;gap:12px 28px;font-size:16px;color:#8C887F}
+.mn-f a:hover{color:#F3F0EA}
+.mn-t:checked ~ .mn-o{opacity:1;visibility:visible}
+.mn-t:checked ~ .mn-b{color:#F3F0EA}
+.mn-t:checked ~ .mn-b .mn-c{background:#F3F0EA;color:#0E0E0E}
+.mn-t:checked ~ .mn-b .mn-h{display:none}
+.mn-t:checked ~ .mn-b .mn-x{display:block}
+.mn-t:focus-visible ~ .mn-b .mn-c{outline:3px solid #E10600;outline-offset:3px}
+body:has(.mn-t:checked){overflow:hidden}
+@media (max-width:860px){.mn-b{top:16px;right:16px;font-size:16px;gap:10px}.mn-b .mn-c{width:52px;height:52px}.mn-in{padding:110px 16px 32px}}
+.foot a,.mn-f a{display:inline-flex;align-items:center;min-height:44px}
+@media (max-width:420px){.h2{font-size:26px!important;overflow-wrap:break-word}}
+</style>
+<style>
+#ld{position:fixed;inset:0;z-index:999;display:flex;align-items:center;justify-content:center;background:var(--bg,#F3F0EA);opacity:0;visibility:hidden;transition:opacity .2s,visibility .2s}
+#ld.on{opacity:1;visibility:visible}
+.ld-f{position:relative;width:96px;height:96px;border-radius:50%;background:#E10600}
+.ld-e{position:absolute;top:30px;width:26px;height:26px;border-radius:50%;background:#F3F0EA}
+.ld-e:nth-child(1){left:18px}.ld-e:nth-child(2){right:18px}
+.ld-p{position:absolute;inset:0;animation:ldr .8s linear infinite}
+.ld-p::after{content:"";position:absolute;left:50%;top:50%;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:#0E0E0E;transform:translateX(5px)}
+@keyframes ldr{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.ld-p{animation:none}}
+</style>
+</head>
+<body>
+<div id="ld" class="on" role="status" aria-label="Loading"><div class="ld-f"><span class="ld-e"><span class="ld-p"></span></span><span class="ld-e"><span class="ld-p"></span></span></div></div>
+<script>(function(){var ld=document.getElementById('ld'),first=true;try{first=!sessionStorage.getItem('ld');sessionStorage.setItem('ld','1')}catch(e){}
+var t0=Date.now(),min=first?450:0;if(!first){ld.classList.remove('on');var slow=setTimeout(function(){ld.classList.add('on')},300)}
+function done(){clearTimeout(slow);setTimeout(function(){ld.classList.remove('on')},Math.max(0,min-(Date.now()-t0)))}
+function bg(){var pg=document.querySelector('.page');if(pg){var c=getComputedStyle(pg).backgroundColor;if(c&&c!=='rgba(0, 0, 0, 0)')ld.style.background=c}}if(document.readyState!=='loading')bg();else document.addEventListener('DOMContentLoaded',bg);if(document.readyState==='complete')done();else window.addEventListener('load',done);
+window.addEventListener('pageshow',function(e){if(e.persisted)ld.classList.remove('on')});
+document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href]');if(!a||a.target==='_blank'||e.metaKey||e.ctrlKey||e.shiftKey)return;var h=a.getAttribute('href');if(!h||h.charAt(0)==='#'||/^(mailto:|tel:|https?:)/.test(h))return;setTimeout(function(){ld.classList.add('on')},300)});})();</script>
+<div class="page pk">
+<div class="wrap"><header class="top"><input type="checkbox" id="mn-t" class="mn-t" aria-label="Open menu"><label for="mn-t" class="mn-b"><span class="mn-c"><svg class="mn-h" viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"></path></svg><svg class="mn-x" viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></span></label><nav class="mn-o" aria-label="Site menu"><div class="mn-in"><ul class="mn-l"><li><a href="index.html">Home</a></li><li><a href="design-agent.html" aria-current="page">Design agent</a></li><li><a href="scanner-app.html">Scanner app</a></li><li><a href="banking.html">J&amp;T Banka</a></li><li><a href="intelino.html">Intelino</a></li><li><a href="process.html">AI-enhanced workflow</a></li><li><a href="about.html">About me &amp; CV</a></li><li><a href="contact.html">Contact</a></li></ul><div class="mn-f"><a href="mailto:ulrichluciee@gmail.com">ulrichluciee@gmail.com</a><a href="https://www.linkedin.com/in/lucieeulrich/" target="_blank" rel="noopener">LinkedIn ↗</a></div></div></nav><a class="back" href="index.html" aria-label="Back to home"><span class="bk"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H5M11 5l-7 7 7 7"></path></svg></span></a></header></div>
+<div class="wrap">
+<section style="padding:72px 0 0"><h1 class="disp in" style="font-size:clamp(44px,6.4vw,104px);animation-delay:.08s;max-width:1200px">A <span style="color:var(--red)">design agent</span> that knows the project</h1><span class="lbl in" style="display:block;margin-top:24px;animation-delay:.12s">Ackee for a logistics client · 2026</span><p class="one in" style="font-size:24px;margin-top:28px;animation-delay:.16s">The design process needed to be faster. I found the two biggest slowdowns. Reading long briefs and putting together the same basic screens again and again. So I built an agent that does exactly that. <span style="color: var(--red)">Every design decision stays with a designer.</span></p><div class="grid2 hero-stats in" style="animation-delay:.24s"><div><div class="stat">5 d → 2 d</div><p class="p" style="margin-top:10px">Per design task, brief to handoff. Measured.</p></div></div><details class="more"><summary><span class="pl">+</span>How it was measured</summary><p class="p">Measured during real work, by me and a second designer: the same tasks, the usual way and with the agent. <b>The 3 saved days went back to research and decisions.</b></p></details></section>
+
+  
+
+<section class="sec"><div class="sh"><span class="no">01 · Situation</span><div><h2 class="h2">The team needed to move faster.</h2><p class="one">Developers already worked with AI. Design was still by hand. Another designer would not fix that. Removing the routine work would.</p></div></div></section><section class="sec"><div class="sh"><span class="no">02 · Experimenting</span><div><h2 class="h2">My first try went wrong.</h2></div></div><div class="grid2" style="margin-top:40px">
+    <figure style="margin:0"><img class="shot" src="assets/ca9a5941ffd2b45f1fb58d01a14f8e6c.webp" alt="AI output gone wrong" width="1570" height="860"><figcaption class="lbl" style="margin-top:12px">Prompting: unpredictable, expensive, looked like AI</figcaption></figure>
+    <figure style="margin:0"><img class="shot" src="assets/41d0685b229a87b0253f80c3a0b226a7.webp" alt="AI output right" width="1568" height="856"><figcaption class="lbl" style="margin-top:12px">Rules: skill → index → rules → context. Same result every time</figcaption></figure>
+  </div><details class="more"><summary><span class="pl">+</span>More detail</summary><p class="p">The input: 20-page technical briefs and complex logistics logic. <b>My first try was one perfect prompt.</b> It gave generic screens, wrong components and invented colours, and every run looked different. So I stopped prompting and wrote rules the AI can follow: skill → index → rules → context. Same result every time.</p></details></section><section class="sec" id="how"><div class="sh"><span class="no">03 · How it works</span><div><h2 class="h2">I built a design agent</h2><p class="one">Here's a simple scheme of how it works, and where the designer makes the decisions.</p></div></div><div class="schema"><div class="schema-in"><svg class="agent-schema" viewBox="0 0 1600 640" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="How the design agent works: brief, design system, team rules and the company knowledge base go into the design agent . The agent drafts screens, the designer edits and decides, the agent reviews against team rules, the designer checks the review and signs off, then handoff as a clickable prototype, which the designer checks and ships." style="display:block;width:100%;height:auto">
+<rect x="0" y="40" width="500" height="120" rx="22" fill="#FFFFFF"></rect>
+<g transform="translate(0 100)"><circle cx="44" cy="0" r="20" fill="#F2B705"></circle></g>
+<text x="96" y="94" style="font-family:var(--font-display);font-stretch:118%;font-weight:800;font-size:24px;text-transform:uppercase" fill="#0E0E0E">Brief</text>
+<text x="96" y="128" style="font-family:var(--font-sans);font-size:22px" fill="#66625B">Technical spec</text>
+<path d="M508 100 C 570 100, 560 290, 604 290" fill="none" stroke="#0E0E0E" stroke-width="3" stroke-linecap="round"></path>
+<rect x="0" y="184" width="500" height="120" rx="22" fill="#FFFFFF"></rect>
+<g transform="translate(0 244)"><rect x="24" y="-20" width="40" height="40" fill="#2D5BFF"></rect></g>
+<text x="96" y="238" style="font-family:var(--font-display);font-stretch:118%;font-weight:800;font-size:24px;text-transform:uppercase" fill="#0E0E0E">Design system</text>
+<text x="96" y="272" style="font-family:var(--font-sans);font-size:22px" fill="#66625B">Components, tokens, patterns</text>
+<path d="M508 244 C 570 244, 560 290, 604 290" fill="none" stroke="#0E0E0E" stroke-width="3" stroke-linecap="round"></path>
+<rect x="0" y="328" width="500" height="120" rx="22" fill="#FFFFFF"></rect>
+<g transform="translate(0 388)"><path d="M44 -22 L66 20 L22 20 Z" fill="#E10600"></path></g>
+<text x="96" y="382" style="font-family:var(--font-display);font-stretch:118%;font-weight:800;font-size:24px;text-transform:uppercase" fill="#0E0E0E">Team rules</text>
+<text x="96" y="416" style="font-family:var(--font-sans);font-size:22px" fill="#66625B">Personas, review checklist, handoff</text>
+<path d="M508 388 C 570 388, 560 290, 604 290" fill="none" stroke="#0E0E0E" stroke-width="3" stroke-linecap="round"></path>
+<rect x="0" y="472" width="500" height="120" rx="22" fill="#FFFFFF"></rect>
+<g transform="translate(0 532)"><path d="M22 14 A22 22 0 0 1 66 14 Z" fill="#0E0E0E"></path></g>
+<text x="96" y="526" style="font-family:var(--font-display);font-stretch:118%;font-weight:800;font-size:24px;text-transform:uppercase" fill="#0E0E0E">GIT database</text>
+<text x="96" y="560" style="font-family:var(--font-sans);font-size:22px" fill="#66625B">Company knowledge base</text>
+<path d="M508 532 C 570 532, 560 290, 604 290" fill="none" stroke="#0E0E0E" stroke-width="3" stroke-linecap="round"></path>
+<path d="M618.0 290.0 L604.0 282.0 L604.0 298.0 Z" fill="#0E0E0E"></path>
+
+
+
+
+
+<style>
+.agent-schema .ag-pup{animation:agLook 6s ease-in-out infinite}
+.agent-schema .ag-smile{opacity:0;transition:opacity .2s}
+.agent-schema .ag-flat{transition:opacity .2s}
+.agent-schema:hover .ag-smile,a:hover .agent-schema .ag-smile{opacity:1}
+.agent-schema:hover .ag-flat,a:hover .agent-schema .ag-flat{opacity:0}
+@keyframes agLook{0%,18%{transform:translate(12px,2px)}24%,42%{transform:translate(-12px,2px)}48%,62%{transform:translate(0,-12px)}68%,100%{transform:translate(12px,2px)}}
+@media (prefers-reduced-motion:reduce){.agent-schema .ag-pup{animation:none;transform:translate(12px,2px)}}
+</style>
+<circle cx="800" cy="290" r="180" fill="#E10600"></circle>
+<circle cx="744" cy="250" r="34" fill="#F3F0EA"></circle><circle cx="856" cy="250" r="34" fill="#F3F0EA"></circle>
+<g class="ag-pup"><circle cx="744" cy="250" r="15" fill="#0E0E0E"></circle><circle cx="856" cy="250" r="15" fill="#0E0E0E"></circle></g>
+<path class="ag-flat" d="M772 352 L828 352" stroke="#0E0E0E" stroke-width="8" stroke-linecap="round" fill="none"></path>
+<path class="ag-smile" d="M752 336 Q800 392 848 336" stroke="#0E0E0E" stroke-width="8" stroke-linecap="round" fill="none"></path>
+<path id="agArcA" d="M574 290 A226 226 0 0 0 1026 290" fill="none"></path><text style="font-family:var(--font-display);font-stretch:118%;font-weight:800;font-size:24px;letter-spacing:.14em" fill="#0E0E0E"><textPath href="#agArcA" startOffset="50%" text-anchor="middle">DESIGN AGENT</textPath></text>
+<path d="M990 290 L1072 290" stroke="#0E0E0E" stroke-width="3" stroke-linecap="round"></path><path d="M1086.0 290.0 L1072.0 282.0 L1072.0 298.0 Z" fill="#0E0E0E"></path>
+<rect x="1100" y="40" width="500" height="560" rx="28" fill="#FFFFFF"></rect>
+<text x="1190" y="96" text-anchor="middle" style="font-family:var(--font-display);font-stretch:118%;font-weight:800;font-size:30px" fill="#E10600">01</text>
+<text x="1268" y="81" style="font-family:var(--font-display);font-stretch:118%;font-weight:800;font-size:18px;text-transform:uppercase" fill="#0E0E0E">Agent drafts screens</text><text x="1268" y="111" style="font-family:var(--font-sans);font-size:22px" fill="#66625B">from the brief</text>
+<path d="M1190 120 L1190 132" stroke="#0E0E0E" stroke-width="3" stroke-linecap="round"></path><path d="M1190 142 L1182 130 L1198 130 Z" fill="#0E0E0E"></path>
+<rect x="1163" y="151" width="54" height="54" rx="14" fill="#2D5BFF"></rect><circle cx="1179" cy="174" r="7.5" fill="#F3F0EA"></circle><circle cx="1181" cy="173" r="3.5" fill="#0E0E0E"></circle><circle cx="1201" cy="174" r="7.5" fill="#F3F0EA"></circle><circle cx="1203" cy="173" r="3.5" fill="#0E0E0E"></circle><path d="M1181 189 Q1190 196 1199 189" stroke="#F3F0EA" stroke-width="3.5" stroke-linecap="round" fill="none"></path>
+<text x="1268" y="173" style="font-family:var(--font-display);font-stretch:118%;font-weight:800;font-size:18px;text-transform:uppercase" fill="#0E0E0E">Designer edits</text><text x="1268" y="203" style="font-family:var(--font-sans);font-size:22px" fill="#66625B">and decides</text>
+<path d="M1190 212 L1190 224" stroke="#0E0E0E" stroke-width="3" stroke-linecap="round"></path><path d="M1190 234 L1182 222 L1198 222 Z" fill="#0E0E0E"></path>
+<text x="1190" y="280" text-anchor="middle" style="font-family:var(--font-display);font-stretch:118%;font-weight:800;font-size:30px" fill="#E10600">03</text>
+<text x="1268" y="265" style="font-family:var(--font-display);font-stretch:118%;font-weight:800;font-size:18px;text-transform:uppercase" fill="#0E0E0E">Agent reviews</text><text x="1268" y="295" style="font-family:var(--font-sans);font-size:22px" fill="#66625B">against team rules</text>
+<path d="M1190 304 L1190 316" stroke="#0E0E0E" stroke-width="3" stroke-linecap="round"></path><path d="M1190 326 L1182 314 L1198 314 Z" fill="#0E0E0E"></path>
+<rect x="1163" y="335" width="54" height="54" rx="14" fill="#2D5BFF"></rect><circle cx="1179" cy="358" r="7.5" fill="#F3F0EA"></circle><circle cx="1181" cy="357" r="3.5" fill="#0E0E0E"></circle><circle cx="1201" cy="358" r="7.5" fill="#F3F0EA"></circle><circle cx="1203" cy="357" r="3.5" fill="#0E0E0E"></circle><path d="M1181 373 Q1190 380 1199 373" stroke="#F3F0EA" stroke-width="3.5" stroke-linecap="round" fill="none"></path>
+<text x="1268" y="357" style="font-family:var(--font-display);font-stretch:118%;font-weight:800;font-size:18px;text-transform:uppercase" fill="#0E0E0E">Designer checks</text><text x="1268" y="387" style="font-family:var(--font-sans);font-size:22px" fill="#66625B">the review, signs off</text>
+<path d="M1190 396 L1190 408" stroke="#0E0E0E" stroke-width="3" stroke-linecap="round"></path><path d="M1190 418 L1182 406 L1198 406 Z" fill="#0E0E0E"></path>
+<text x="1190" y="464" text-anchor="middle" style="font-family:var(--font-display);font-stretch:118%;font-weight:800;font-size:30px" fill="#E10600">05</text>
+<text x="1268" y="449" style="font-family:var(--font-display);font-stretch:118%;font-weight:800;font-size:18px;text-transform:uppercase" fill="#0E0E0E">Handoff</text><text x="1268" y="479" style="font-family:var(--font-sans);font-size:22px" fill="#66625B">clickable prototype</text>
+<path d="M1190 488 L1190 500" stroke="#0E0E0E" stroke-width="3" stroke-linecap="round"></path><path d="M1190 510 L1182 498 L1198 498 Z" fill="#0E0E0E"></path>
+<rect x="1163" y="519" width="54" height="54" rx="14" fill="#2D5BFF"></rect><circle cx="1179" cy="542" r="7.5" fill="#F3F0EA"></circle><circle cx="1181" cy="541" r="3.5" fill="#0E0E0E"></circle><circle cx="1201" cy="542" r="7.5" fill="#F3F0EA"></circle><circle cx="1203" cy="541" r="3.5" fill="#0E0E0E"></circle><path d="M1181 557 Q1190 564 1199 557" stroke="#F3F0EA" stroke-width="3.5" stroke-linecap="round" fill="none"></path>
+<text x="1268" y="541" style="font-family:var(--font-display);font-stretch:118%;font-weight:800;font-size:18px;text-transform:uppercase" fill="#0E0E0E">Designer checks</text><text x="1268" y="571" style="font-family:var(--font-sans);font-size:22px" fill="#66625B">and ships</text>
+</svg></div></div><p class="lbl schema-hint">Swipe to see the whole flow →</p><details class="more"><summary><span class="pl">+</span>How it's built</summary><p class="p"><b>What's inside:</b> team rules, synthetic personas, and <b>screen patterns</b> for the mobile and web app. As part of the team, I picked the universal ones from screens we had already made.</p><p class="p"><b>Claude reads</b>&nbsp;the rules.&nbsp;<b>Two ways to build, the designer chooses:</b> from the Figma library, or with the same design system in Artifacts. Artifacts is the better choice, because it can also make HTML prototypes. Figma stays the source of truth. <br><br><b>Every week, Claude checks</b> the design system in Figma and updates it in Claude.</p><p class="p"><b>It lives in Git and a shared skill.</b> Every session starts from the latest version, so the whole team always works with the same rules.</p></details><div class="panel" style="background: #141414; margin-top: 40px; padding: 0; height: 801px"><video src="assets/1d81100a7436bdc3a20527d42a8d05c5.mp4" poster="assets/def986ba8f7d5cfb0fd39803286fd96d.jpg" autoplay="" muted="" loop="" playsinline="" preload="auto" controls="" aria-label="Schematic: the design agent assembling an operator app concept, section by section" style="display:block;height:760px;max-width:100%;width:auto"></video></div><p class="lbl" style="margin-top:12px">Schematic of a real session: the agent assembles an app concept section by section. In Figma or Artifacts.</p></section><section class="sec"><div class="sh"><span class="no">04 · Result</span><div><h2 class="h2">The agent assembles first screens from the brief.</h2><p class="one">It builds a first draft from the brief and the design system. A designer decides and finishes it.</p></div></div></section><section class="sec"><div class="sh"><span class="no">05 · Persona</span><div><h2 class="h2">A synthetic persona, checked by real users.</h2><p class="one">Interviews become one persona that every designer tests with. Real users validate it, so the team understands their needs even when there is no time to visit them. <b style="color:var(--red)">It grows with every new interview.</b></p></div></div><div class="split" style="margin-top:40px;align-items:center"><div style="display:flex;flex-direction:column;gap:18px"><div class="stp"><span class="stp-n" style="width:10px;height:10px;margin:8px 0 0 10px"></span><div><b>Interviews: Real users</b>What they do, what slows them down, what they fear.</div></div><div class="stp"><span class="stp-n" style="width:10px;height:10px;margin:8px 0 0 10px"></span><div><b>Synthetic persona is born</b>Built from the interviews</div></div><div class="stp"><span class="stp-n" style="width:10px;height:10px;margin:8px 0 0 10px"></span><div><b>Designers have access to it for testing</b>From user flows to setup behaviour</div></div><div class="stp"><span class="stp-n" style="width:10px;height:10px;margin:8px 0 0 10px"></span><div><b>With every new interview, the synthetic persona gets better&nbsp;</b>Repeating the process makes the synthetic persona better.&nbsp;</div></div></div><div style="max-width:460px;width:100%;justify-self:center"><div style="border-radius:22px;background:#fff;box-shadow:inset 0 0 0 1px var(--line);padding:12px"><div role="img" aria-label="Real users give interviews, the team builds a synthetic persona from them, and every designer has access to it in Claude" style="display:flex;flex-direction:column;align-items:center;padding:40px 16px 16px;text-align:center">
+<p style="font-family:var(--font-display);font-stretch:118%;font-weight:800;text-transform:uppercase;font-size:16px;color:#0E0E0E;margin:0">Real user</p>
+<div style="width:92px;height:92px;border-radius:50%;background:#E10600;display:flex;flex-direction:column;align-items:center;margin-top:20px"><div style="display:flex;gap:10px;margin-top:26px"><div style="width:24px;height:24px;border-radius:50%;background:#F3F0EA;display:flex;align-items:center;justify-content:center"><div style="width:11px;height:11px;border-radius:50%;background:#0E0E0E;margin-left:6px"></div></div><div style="width:24px;height:24px;border-radius:50%;background:#F3F0EA;display:flex;align-items:center;justify-content:center"><div style="width:11px;height:11px;border-radius:50%;background:#0E0E0E;margin-left:6px"></div></div></div><div style="width:32px;height:12px;border:3.5px solid #0E0E0E;border-top:0;border-radius:0 0 20px 20px;margin-top:4px;box-sizing:border-box"></div></div>
+<div style="position:relative;display:flex;flex-direction:column;align-items:center;margin:10px 0"><div style="width:4px;height:30px;background:#E10600;border-radius:2px"></div><div style="width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-top:14px solid #E10600"></div><p style="font-family:var(--font-sans);font-weight:500;font-size:14px;color:#66625B;margin:0;color:#E10600;font-size:15px;position:absolute;left:22px;top:12px;white-space:nowrap">Interviews</p></div>
+<div style="position:relative"><div style="width:128px;height:128px;border:4px dashed #2D5BFF;border-radius:28px;box-sizing:border-box;display:flex;align-items:center;justify-content:center"><div style="width:96px;height:96px;border-radius:22px;background:#2D5BFF;display:flex;justify-content:center"><div style="display:flex;gap:10px;margin-top:28px"><div style="width:24px;height:24px;border-radius:50%;background:#F3F0EA;display:flex;align-items:center;justify-content:center"><div style="width:11px;height:11px;border-radius:50%;background:#0E0E0E;margin-left:6px"></div></div><div style="width:24px;height:24px;border-radius:50%;background:#F3F0EA;display:flex;align-items:center;justify-content:center"><div style="width:11px;height:11px;border-radius:50%;background:#0E0E0E;margin-left:6px"></div></div></div></div></div><div style="position:absolute;left:calc(100% + 18px);top:50%;transform:translateY(-50%);display:flex;flex-direction:column;align-items:center;gap:8px"></div></div>
+<p style="font-family:var(--font-display);font-stretch:118%;font-weight:800;text-transform:uppercase;font-size:16px;color:#0E0E0E;margin:0;margin-top:22px">Synthetic persona</p>
+<p style="font-family:var(--font-sans);font-weight:500;font-size:14px;color:#66625B;margin:0;margin-top:6px">grows with every interview</p>
+<div style="display:flex;flex-direction:column;align-items:center;margin:12px 0"><div style="width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-bottom:14px solid #0E0E0E"></div><div style="width:4px;height:30px;background:#0E0E0E;border-radius:2px"></div></div>
+<div style="display:flex;align-items:flex-end;gap:34px">
+<div style="width:52px;height:48px;background:#F2B705;clip-path:polygon(50% 0,100% 100%,0 100%);display:flex;justify-content:center"><div style="display:flex;gap:4px;margin-top:26px"><div style="width:12px;height:12px;border-radius:50%;background:#F3F0EA;display:flex;align-items:center;justify-content:center"><div style="width:5px;height:5px;border-radius:50%;background:#0E0E0E;margin-left:2px"></div></div><div style="width:12px;height:12px;border-radius:50%;background:#F3F0EA;display:flex;align-items:center;justify-content:center"><div style="width:5px;height:5px;border-radius:50%;background:#0E0E0E;margin-left:2px"></div></div></div></div>
+<div style="width:48px;height:48px;border-radius:8px;background:#E10600;display:flex;justify-content:center"><div style="display:flex;gap:4px;margin-top:14px"><div style="width:12px;height:12px;border-radius:50%;background:#F3F0EA;display:flex;align-items:center;justify-content:center"><div style="width:5px;height:5px;border-radius:50%;background:#0E0E0E;margin-left:2px"></div></div><div style="width:12px;height:12px;border-radius:50%;background:#F3F0EA;display:flex;align-items:center;justify-content:center"><div style="width:5px;height:5px;border-radius:50%;background:#0E0E0E;margin-left:2px"></div></div></div></div>
+<div style="width:52px;height:26px;border-radius:26px 26px 0 0;background:#0E0E0E;display:flex;justify-content:center"><div style="display:flex;gap:4px;margin-top:8px"><div style="width:12px;height:12px;border-radius:50%;background:#F3F0EA;display:flex;align-items:center;justify-content:center"><div style="width:5px;height:5px;border-radius:50%;background:#0E0E0E;margin-left:2px"></div></div><div style="width:12px;height:12px;border-radius:50%;background:#F3F0EA;display:flex;align-items:center;justify-content:center"><div style="width:5px;height:5px;border-radius:50%;background:#0E0E0E;margin-left:2px"></div></div></div></div>
+</div>
+<p style="font-family:var(--font-sans);font-weight:500;font-size:14px;color:#66625B;margin:0;margin-top:18px">Every designer has access to the persona in Claude.</p>
+</div></div></div></div><div style="display:flex;align-items:flex-end;gap:14px;margin-top:40px;max-width:720px"><svg class="av" width="52" height="52" viewBox="0 0 64 64" role="img" aria-label="Lucie" style="flex:none;display:block"><circle cx="32" cy="32" r="32" fill="#E10600"></circle><circle cx="22" cy="28" r="8" fill="#F3F0EA"></circle><circle cx="42" cy="28" r="8" fill="#F3F0EA"></circle><circle cx="26" cy="30" r="3.6" fill="#0E0E0E"></circle><circle cx="46" cy="30" r="3.6" fill="#0E0E0E"></circle></svg><p style="margin:0;padding:18px 22px;border-radius:24px 24px 24px 6px;background:#fff;color:#0E0E0E;font-size:18px;line-height:1.45;font-weight:600">For example: One team tests a feature and finds out it doesn't work. Another team can use the synthetic persona and save some time. It's especially useful in big teams, where you can connect knowledge from tools like Notion or Confluence and improve the first round of testing.</p></div><details class="more" style="max-width:none"><summary><span class="pl">+</span>Example: what a persona looks like</summary><div style="margin-top: 24px; max-width: 720px; width: 100%"><div style="display:flex;flex-direction:column;gap:20px;padding:32px;border-radius:22px;background:#fff;box-shadow:inset 0 0 0 1px var(--line)"><div style="display:flex;align-items:center;gap:16px"><svg width="64" height="64" viewBox="0 0 64 64" aria-hidden="true" style="flex:none;display:block"><rect width="64" height="64" rx="14" fill="#2D5BFF"></rect><circle cx="22" cy="28" r="8" fill="#F3F0EA"></circle><circle cx="42" cy="28" r="8" fill="#F3F0EA"></circle><circle cx="25" cy="29" r="3.6" fill="#0E0E0E"></circle><circle cx="45" cy="29" r="3.6" fill="#0E0E0E"></circle></svg><div><span class="lbl">Synthetic persona · from interviews</span><div style="font-family:var(--font-display);font-stretch:118%;font-weight:800;text-transform:uppercase;font-size:22px;letter-spacing:-.01em;margin-top:4px">Driver at dispatch</div></div></div><p class="lead" style="margin:0">“Just tell me it's done, so I can go.”</p><p class="p" style="margin:0">Loads his own route on the ramp at 6 am. Often an external carrier. Uses the app every day, for a few minutes, for nothing else.</p><div><span class="lbl">Feels</span><p class="p" style="margin:6px 0 0;color:var(--fg)">Impatient · afraid of a mistake he can't fix on the route · unsure while waiting for the coordinator</p></div><div class="chips"><span style="display:inline-flex;padding:7px 12px;border-radius:999px;font-size:13px;font-weight:600;background:#EEF1FF;color:#2D5BFF">Time pressure</span><span style="display:inline-flex;padding:7px 12px;border-radius:999px;font-size:13px;font-weight:600;background:#EEF1FF;color:#2D5BFF">Hands full</span><span style="display:inline-flex;padding:7px 12px;border-radius:999px;font-size:13px;font-weight:600;background:#EEF1FF;color:#2D5BFF">Noise</span><span style="display:inline-flex;padding:7px 12px;border-radius:999px;font-size:13px;font-weight:600;background:#EEF1FF;color:#2D5BFF">Weak signal</span><span style="display:inline-flex;padding:7px 12px;border-radius:999px;font-size:13px;font-weight:600;background:#EEF1FF;color:#2D5BFF">Gloves</span></div><span class="lbl" style="margin-top:4px">What it changed in the design</span><div class="rows" style="margin:0"><div><span>Gloves on, one hand full</span><span>Scan fills the screen</span></div><div><span>Loud ramp, dark van</span><span>Colour, icon and big text</span></div><div><span>Afraid of loading the wrong parcel</span><span>Last scan in big type</span></div></div></div></div></details></section><section class="sec"><div class="sh"><span class="no">06 · Safety nets</span><div><h2 class="h2">Safety nets, built in.</h2><p class="one">The checker agent starts when a draft is done, and any designer can run it alone. Nothing gets to a designer without a check, and nothing goes out without a designer.</p></div></div><details class="more" style="max-width:none"><summary><span class="pl">+</span>What the safety nets are</summary><div class="decs"><div class="dec"><span class="dec-n" style="width:10px;height:10px;margin:10px 0 0 10px"></span><b>A second agent checks the first.</b><span>Every finished draft gets a review against the team rules before a designer sees it. The designer gets a list of findings, not a guess.</span></div><div class="dec"><span class="dec-n" style="width:10px;height:10px;margin:10px 0 0 10px"></span><b>I own the rules. Anyone adds context.</b><span>Rules change only through me. The team adds knowledge to the shared Git repository, so it grows without breaking.</span></div><div class="dec"><span class="dec-n" style="width:10px;height:10px;margin:10px 0 0 10px"></span><b>Check what is in production, not what was drawn.</b><span>The audit puts Figma, production and the brief side by side, with screenshots. Every finding is checked against the brief before it goes to the team.</span></div><div class="dec"><span class="dec-n" style="width:10px;height:10px;margin:10px 0 0 10px"></span><b>Versions to choose from.</b><span>If the designer wants, Claude offers a few versions of the design to pick from.</span></div><div class="dec"><span class="dec-n" style="width:10px;height:10px;margin:10px 0 0 10px"></span><b>Only from the design system.</b><span>The agent assembles only from the design system. A script measures how far each draft is from it and marks every detached element.</span></div></div></details></section><section class="sec"><div class="sh"><span class="no">07 · Adoption</span><div><h2 class="h2">A STEP-BY-STEP TRANSFORMATION.</h2><p class="one">Not a switch, a gradual change of how the team works. One new capability at a time, until it stopped being “the AI thing”.</p></div></div>
+  <p class="lead" style="margin-top:40px">“Wait, how is this so good?” <span class="m">The team, a month in.</span></p><details class="more"><summary><span class="pl">+</span>More detail</summary><p class="p">No big switch. I watched what the team needed most: reading specs, prototyping, pre-built screens, personas for flows. Each one came as its own step, and the next one only when the previous one was part of the routine.</p></details></section><section class="sec" id="handover"><div class="sh"><span class="no">08 · Handover</span><div><h2 class="h2">Handover</h2><p class="one">Without someone who owns the rules, the system falls apart. So before I leave, the team gets a manual for keeping it alive, and one designer takes over as the maintainer.</p></div></div><details class="more" style="max-width:none"><summary><span class="pl">+</span>What's in the manual</summary><div class="decs" style="margin-top:24px"><div class="dec"><span class="dec-n" style="width:10px;height:10px;margin:10px 0 0 10px"></span><b>When the agent gets it wrong.</b><span>Fix it in the chat. If it repeats, the maintainer turns it into a rule. Nobody edits rules on their own.</span></div><div class="dec"><span class="dec-n" style="width:10px;height:10px;margin:10px 0 0 10px"></span><b>When the design system changes.</b><span>A designer runs the sync. A weekly check only reports the differences.</span></div><div class="dec"><span class="dec-n" style="width:10px;height:10px;margin:10px 0 0 10px"></span><b>Who may change what.</b><span>Context: anyone. Rules: the maintainer only.</span></div><div class="dec"><span class="dec-n" style="width:10px;height:10px;margin:10px 0 0 10px"></span><b>Before you start, and who to ask.</b><span>Access, what counts as final, where to report a bug. One page of names and links.</span></div><div class="dec"><span class="dec-n" style="width:10px;height:10px;margin:10px 0 0 10px"></span><b>Personas, verified.</b><span>Built from interviews, then validated at the depot. Until a new persona is verified, the agent says so in every brief.</span></div><div class="dec"><span class="dec-n" style="width:10px;height:10px;margin:10px 0 0 10px"></span><b>Efficiency, measured.</b><span>At the end of every task the agent asks to save metrics. It takes them from the chat and the files, the designer fills in nothing. So it can say if working with it was really efficient.</span></div></div><p class="p" style="margin-top:20px"><b>The agent keeps working only as long as a designer keeps it in shape.</b></p></details></section><section class="sec" style="padding-top:96px"><span class="lbl">Project details</span><div class="facts" style="margin-top:16px"><div><span class="lbl">My role</span><span>Research, build, team training</span></div><div><span class="lbl">Team</span><span>Me + 3 designers</span></div><div><span class="lbl">Built with</span><span>Claude, Figma MCP, Git</span></div><div><span class="lbl">Client</span><span>Logistics client · parcel delivery</span></div></div></section><a class="next" href="scanner-app.html"><div style="display:flex;flex-direction:column;gap:14px"><span class="lbl">Next case</span><span class="disp">Scanner app for depot workers</span></div><span class="disp" aria-hidden="true">→</span></a>
+</div>
+<div class="wrap"><footer class="foot"><span>Lucie Ulrich · Product designer · Prague</span><span style="display:flex;flex-wrap:wrap;gap:12px 24px"><a class="ln" href="mailto:ulrichluciee@gmail.com">ulrichluciee@gmail.com</a><a class="ln" href="https://www.linkedin.com/in/lucieeulrich/">LinkedIn ↗</a><a class="ln" href="https://drive.google.com/file/d/1G9ZSz2dUczU3Vgd_duXCie2-PDqLNLEa/view">PDF ↗</a></span></footer></div>
+</div>
+<script>if(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches)document.querySelectorAll("video[autoplay]").forEach(function(v){v.removeAttribute("autoplay");v.pause();v.controls=true});</script>
+</body>
+</html>
